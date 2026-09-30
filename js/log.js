@@ -8,22 +8,60 @@ const submitButton = document.querySelector("#log-submit");
 const cancelButton = document.querySelector("#log-cancel");
 const bookSelect = form.elements.bookId;
 const dateInput = form.elements.date;
+const pagesInput = form.elements.pages;
+const pagesHint = document.querySelector("#pages-hint");
 const noBooksMessage = document.querySelector("#log-no-books");
+const noBooksText = document.querySelector("#log-no-books-text");
 const list = document.querySelector("#entry-list");
 const emptyMessage = document.querySelector("#log-empty");
 
 let editingId = null;
 
-function fillBookOptions() {
+// Pages not yet logged for this book, NOT counting the entry being edited
+function pagesLeft(bookId) {
+  const book = getBook(bookId);
+  if (!book) return 0;
+  const alreadyLogged = getEntries()
+    .filter((e) => e.bookId === bookId && e.id !== editingId)
+    .reduce((sum, e) => sum + e.pages, 0);
+  return Math.max(0, book.totalPages - alreadyLogged);
+}
+
+// Books that still have pages left to log (finished books are hidden)
+function availableBooks() {
+  return getBooks().filter((book) => pagesLeft(book.id) > 0);
+}
+
+function updatePagesLimit() {
+  const left = pagesLeft(bookSelect.value);
+  const message = Number(pagesInput.value) > left ? `Only ${left} pages left in this book.` : "";
+  pagesInput.setCustomValidity(message);
+  pagesHint.textContent = message || `${left} pages left in this book`;
+  pagesHint.classList.toggle("error", message !== "");
+}
+
+// Shows the form (or the "add a book" message) and refreshes the dropdown and hint
+function refreshForm() {
+  const books = availableBooks();
+  noBooksMessage.hidden = books.length > 0;
+  form.hidden = books.length === 0;
+  noBooksText.textContent = getBooks().length === 0
+    ? "You need to add a book before you can log pages."
+    : "All your books are finished! Add a new book to keep logging.";
+  fillBookOptions(books);
+  updatePagesLimit();
+}
+
+function fillBookOptions(books) {
   const selected = bookSelect.value;
-  const options = getBooks().map((book) => {
+  const options = books.map((book) => {
     const option = document.createElement("option");
     option.value = book.id;
     option.textContent = book.title;
     return option;
   });
   bookSelect.replaceChildren(...options);
-  if (getBook(selected)) bookSelect.value = selected;
+  if (books.some((book) => book.id === selected)) bookSelect.value = selected;
 }
 
 function readForm() {
@@ -37,9 +75,11 @@ function readForm() {
 
 function startEditing(entry) {
   editingId = entry.id;
+  refreshForm();
   bookSelect.value = entry.bookId;
   dateInput.value = entry.date;
-  form.elements.pages.value = entry.pages;
+  pagesInput.value = entry.pages;
+  updatePagesLimit();
   heading.textContent = "Edit log";
   submitButton.textContent = "Save changes";
   cancelButton.hidden = false;
@@ -53,6 +93,7 @@ function stopEditing() {
   heading.textContent = "Log pages read";
   submitButton.textContent = "Log pages";
   cancelButton.hidden = true;
+  refreshForm();
 }
 
 function createEntryItem(entry) {
@@ -94,11 +135,7 @@ function createEntryItem(entry) {
 }
 
 export function renderLog() {
-  const hasBooks = getBooks().length > 0;
-  noBooksMessage.hidden = hasBooks;
-  form.hidden = !hasBooks;
-
-  fillBookOptions();
+  refreshForm();
   dateInput.max = todayString();
   if (!dateInput.value) dateInput.value = todayString();
 
@@ -122,7 +159,14 @@ form.addEventListener("submit", (event) => {
 });
 
 cancelButton.addEventListener("click", stopEditing);
+bookSelect.addEventListener("change", updatePagesLimit);
+pagesInput.addEventListener("input", updatePagesLimit);
 
 document.querySelector("#go-to-books").addEventListener("click", () => {
   document.querySelector('.tab-bar [data-tab="books"]').click();
 });
+
+export function setLogDate(dateStr) {
+  dateInput.value = dateStr;
+  pagesInput.focus();
+}

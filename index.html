@@ -13,15 +13,39 @@
 
   <main>
     <section id="tab-heatmap" class="tab">
-      <h2>Heatmap</h2>
-      <p class="placeholder">Your monthly reading heatmap will appear here.</p>
+      <p id="heatmap-summary" class="summary"></p>
+
+      <div class="month-nav">
+        <button type="button" id="prev-month" aria-label="Previous month">◀</button>
+        <h2 id="month-label"></h2>
+        <button type="button" id="next-month" aria-label="Next month">▶</button>
+      </div>
+
+      <div class="card">
+        <div id="calendar" class="calendar"></div>
+        <div class="legend">
+          Less
+          <span class="cell level-0"></span>
+          <span class="cell level-1"></span>
+          <span class="cell level-2"></span>
+          <span class="cell level-3"></span>
+          <span class="cell level-4"></span>
+          More
+        </div>
+      </div>
+
+      <div id="day-details" class="card" hidden>
+        <h3 id="day-details-title"></h3>
+        <ul id="day-details-list" class="day-list"></ul>
+        <button type="button" class="primary" id="log-for-day">Log for this day</button>
+      </div>
     </section>
 
     <section id="tab-log" class="tab" hidden>
       <h2>Log pages</h2>
 
       <div id="log-no-books" class="card" hidden>
-        <p>You need to add a book before you can log pages.</p>
+        <p id="log-no-books-text">You need to add a book before you can log pages.</p>
         <button type="button" class="primary" id="go-to-books">Add a book</button>
       </div>
 
@@ -35,6 +59,7 @@
         </label>
         <label>Pages read
           <input name="pages" type="number" min="1" step="1" inputmode="numeric" required>
+          <small id="pages-hint" class="hint"></small>
         </label>
         <div class="form-actions">
           <button type="submit" class="primary" id="log-submit">Log pages</button>

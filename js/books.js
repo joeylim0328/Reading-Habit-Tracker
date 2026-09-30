@@ -7,8 +7,20 @@ const submitButton = document.querySelector("#book-submit");
 const cancelButton = document.querySelector("#book-cancel");
 const list = document.querySelector("#book-list");
 const emptyMessage = document.querySelector("#books-empty");
+const totalPagesInput = form.elements.totalPages;
 
 let editingId = null;
+
+// When editing, the total can't be lower than the pages already logged
+function updateTotalPagesLimit() {
+  const pagesRead = editingId ? bookProgress(editingId).pagesRead : 0;
+  const total = Number(totalPagesInput.value);
+  totalPagesInput.setCustomValidity(
+    total && total < pagesRead
+      ? `You've already logged ${pagesRead} pages, so the total must be at least ${pagesRead}.`
+      : ""
+  );
+}
 
 function progressText(book) {
   const { pagesRead, percent } = bookProgress(book.id);
@@ -37,6 +49,7 @@ function startEditing(book) {
   heading.textContent = "Edit book";
   submitButton.textContent = "Save changes";
   cancelButton.hidden = false;
+  updateTotalPagesLimit();
   form.scrollIntoView({ behavior: "smooth" });
 }
 
@@ -46,6 +59,7 @@ function stopEditing() {
   heading.textContent = "Add a book";
   submitButton.textContent = "Add book";
   cancelButton.hidden = true;
+  updateTotalPagesLimit();
 }
 
 function createBookCard(book) {
@@ -107,3 +121,4 @@ form.addEventListener("submit", (event) => {
 });
 
 cancelButton.addEventListener("click", stopEditing);
+totalPagesInput.addEventListener("input", updateTotalPagesLimit);

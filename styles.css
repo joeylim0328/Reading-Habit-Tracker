@@ -156,3 +156,121 @@ progress {
 .entry-item p {
   margin: 4px 0 0;
 }
+
+.hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.hint.error {
+  color: #cf222e;
+}
+
+.summary {
+  text-align: center;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.month-nav h2 {
+  margin: 0;
+  min-width: 170px;
+  text-align: center;
+}
+
+.month-nav button {
+  width: 36px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+}
+
+.month-nav button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.day-name {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.day {
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.day:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.day.today {
+  outline: 2px solid #f39c12;
+  outline-offset: -2px;
+  font-weight: 700;
+}
+
+.day.selected {
+  outline: 2px solid var(--text);
+  outline-offset: -2px;
+}
+
+.level-0 { background: #ebedf0; }
+.level-1 { background: #9be9a8; }
+.level-2 { background: #40c463; }
+.level-3 { background: #30a14e; color: white; }
+.level-4 { background: #216e39; color: white; }
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.legend .cell {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.day-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.day-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
