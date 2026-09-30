@@ -19,7 +19,32 @@
 
     <section id="tab-log" class="tab" hidden>
       <h2>Log pages</h2>
-      <p class="placeholder">The form to log pages read will appear here.</p>
+
+      <div id="log-no-books" class="card" hidden>
+        <p>You need to add a book before you can log pages.</p>
+        <button type="button" class="primary" id="go-to-books">Add a book</button>
+      </div>
+
+      <form id="log-form" class="card">
+        <h3 id="log-form-heading">Log pages read</h3>
+        <label>Book
+          <select name="bookId" required></select>
+        </label>
+        <label>Date
+          <input name="date" type="date" required>
+        </label>
+        <label>Pages read
+          <input name="pages" type="number" min="1" step="1" inputmode="numeric" required>
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="primary" id="log-submit">Log pages</button>
+          <button type="button" id="log-cancel" hidden>Cancel</button>
+        </div>
+      </form>
+
+      <h3>Recent logs</h3>
+      <p id="log-empty" class="placeholder">No reading logged yet.</p>
+      <ul id="entry-list" class="book-list"></ul>
     </section>
 
     <section id="tab-books" class="tab" hidden>

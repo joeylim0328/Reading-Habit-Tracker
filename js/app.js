@@ -1,5 +1,6 @@
 // app.js: the app's entry point, like main.py
 import { renderBooks } from "./books.js";
+import { renderLog } from "./log.js";
 
 const tabs = document.querySelectorAll(".tab");
 const tabButtons = document.querySelectorAll(".tab-bar button");
@@ -17,6 +18,7 @@ function showTab(name) {
 }
 
   if (name === "books") renderBooks();
+  if (name === "log") renderLog();
 }
 
 for (const button of tabButtons) {
