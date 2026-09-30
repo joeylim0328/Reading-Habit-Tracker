@@ -1,0 +1,9 @@
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local data backups exported from the app (may contain your reading history)
+reading-tracker-*.json
