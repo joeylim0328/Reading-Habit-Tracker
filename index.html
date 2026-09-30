@@ -24,7 +24,26 @@
 
     <section id="tab-books" class="tab" hidden>
       <h2>Books</h2>
-      <p class="placeholder">Your books will appear here.</p>
+
+      <form id="book-form" class="card">
+        <h3 id="book-form-heading">Add a book</h3>
+        <label>Title
+          <input name="title" required pattern=".*\S.*" title="Please enter a title">
+        </label>
+        <label>Author
+          <input name="author">
+        </label>
+        <label>Total pages
+          <input name="totalPages" type="number" min="1" step="1" inputmode="numeric" required>
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="primary" id="book-submit">Add book</button>
+          <button type="button" id="book-cancel" hidden>Cancel</button>
+        </div>
+      </form>
+
+      <p id="books-empty" class="placeholder">No books yet. Add your first book above.</p>
+      <ul id="book-list" class="book-list"></ul>
     </section>
   </main>
 

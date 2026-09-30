@@ -1,4 +1,5 @@
 // app.js: the app's entry point, like main.py
+import { renderBooks } from "./books.js";
 
 const tabs = document.querySelectorAll(".tab");
 const tabButtons = document.querySelectorAll(".tab-bar button");
@@ -14,6 +15,8 @@ function showTab(name) {
   const isMatch = button.dataset.tab === name;
   button.classList.toggle("active", isMatch);
 }
+
+  if (name === "books") renderBooks();
 }
 
 for (const button of tabButtons) {
