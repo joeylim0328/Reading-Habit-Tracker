@@ -15,7 +15,7 @@ function progressText(book) {
   // Return text like "120 / 412 pages (29%)"
   // If percent is 100, return "Finished! 412 / 412 pages" instead
   if (percent === 100) {
-    return `Finished! ${book.pagesRead} / ${book.totalPages} pages`;
+    return `Finished! ${pagesRead} / ${book.totalPages} pages`;
   }
   return `${pagesRead} / ${book.totalPages} pages (${percent}%)`;
 }
