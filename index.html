@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reading Habit Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Reading Tracker</h1>
+  </header>
+
+  <main>
+    <section id="tab-heatmap" class="tab">
+      <h2>Heatmap</h2>
+      <p class="placeholder">Your monthly reading heatmap will appear here.</p>
+    </section>
+
+    <section id="tab-log" class="tab" hidden>
+      <h2>Log pages</h2>
+      <p class="placeholder">The form to log pages read will appear here.</p>
+    </section>
+
+    <section id="tab-books" class="tab" hidden>
+      <h2>Books</h2>
+      <p class="placeholder">Your books will appear here.</p>
+    </section>
+  </main>
+
+  <nav class="tab-bar">
+    <button data-tab="heatmap">Heatmap</button>
+    <button data-tab="log">Log</button>
+    <button data-tab="books">Books</button>
+  </nav>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
