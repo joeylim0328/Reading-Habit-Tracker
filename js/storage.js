@@ -119,3 +119,43 @@ export function pagesByDate() {
   }
   return totals;
 }
+
+// ---------- Backup (export / import) ----------
+
+export function exportData() {
+  return JSON.stringify(state, null, 2);
+}
+
+function isValidBook(b) {
+  return typeof b.id === "string"
+    && typeof b.title === "string"
+    && Number.isInteger(b.totalPages)
+    && b.totalPages > 0;
+}
+
+function isValidEntry(e) {
+  // Return true only if
+  //   e.id is a string, e.bookId is a string,
+  //   e.date looks like "YYYY-MM-DD", and
+  //   e.pages is a whole number greater than 0
+  return typeof e.id === "string"
+    && typeof e.bookId === "string"
+    && /^\d{4}-\d{2}-\d{2}$/.test(e.date)
+    && Number.isInteger(e.pages)
+    && e.pages > 0;
+}
+
+function isValidState(data) {
+  return Boolean(data)
+    && Array.isArray(data.books) && data.books.every(isValidBook)
+    && Array.isArray(data.entries) && data.entries.every(isValidEntry);
+}
+
+export function importData(text) {
+  const data = JSON.parse(text);
+  if (!isValidState(data)) {
+    throw new Error("This file doesn't look like a Reading Tracker backup.");
+  }
+  state = { schemaVersion: 1, books: data.books, entries: data.entries };
+  saveState();
+}

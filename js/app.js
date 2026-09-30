@@ -2,6 +2,7 @@
 import { renderBooks } from "./books.js";
 import { renderLog } from "./log.js";
 import { renderHeatmap } from "./heatmap.js";
+import "./backup.js";
 
 const tabs = document.querySelectorAll(".tab");
 const tabButtons = document.querySelectorAll(".tab-bar button");
