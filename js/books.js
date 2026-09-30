@@ -62,6 +62,20 @@ function stopEditing() {
   updateTotalPagesLimit();
 }
 
+// "Dune (read 2)" -> "Dune", "Dune" -> "Dune"
+function baseTitle(title) {
+  return title.replace(/ \(read \d+\)$/, "");
+}
+
+// Creates a fresh copy of a finished book, e.g. "Dune" -> "Dune (read 2)"
+function readAgain(book) {
+  const base = baseTitle(book.title);
+  const reads = getBooks().filter(
+    (b) => baseTitle(b.title) === base && b.author === book.author
+  ).length;
+  addBook({ title: `${base} (read ${reads + 1})`, author: book.author, totalPages: book.totalPages });
+}
+
 function createBookCard(book) {
   const item = document.createElement("li");
   item.className = "card";
@@ -97,6 +111,17 @@ function createBookCard(book) {
   const actions = document.createElement("div");
   actions.className = "card-actions";
   actions.append(editButton, deleteButton);
+
+  // Finished books get a "Read again" button
+  if (bookProgress(book.id).percent === 100) {
+    const readAgainButton = document.createElement("button");
+    readAgainButton.textContent = "Read again";
+    readAgainButton.addEventListener("click", () => {
+      readAgain(book);
+      renderBooks();
+    });
+    actions.append(readAgainButton);
+  }
 
   item.append(title, author, bar, progress, actions);
   return item;
