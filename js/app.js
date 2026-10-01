@@ -29,3 +29,11 @@ for (const button of tabButtons) {
 }
 
 showTab("heatmap");
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+
+if (navigator.storage && navigator.storage.persist) {
+  navigator.storage.persist();
+}
