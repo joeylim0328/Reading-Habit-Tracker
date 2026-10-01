@@ -274,3 +274,23 @@ progress {
   padding: 6px 0;
   border-bottom: 1px solid var(--border);
 }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tab-bar-height) + 16px);
+  transform: translate(-50%, 20px);
+  background: var(--text);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}

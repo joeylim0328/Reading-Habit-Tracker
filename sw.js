@@ -14,6 +14,8 @@ const APP_FILES = [
   "./js/heatmap.js",
   "./js/log.js",
   "./js/storage.js",
+  "./js/toast.js",
+  "./js/version.js",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
 ];

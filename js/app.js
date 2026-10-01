@@ -3,6 +3,8 @@ import { renderBooks } from "./books.js";
 import { renderLog } from "./log.js";
 import { renderHeatmap } from "./heatmap.js";
 import "./backup.js";
+import { APP_VERSION } from "./version.js";
+import { showToast } from "./toast.js";
 
 const tabs = document.querySelectorAll(".tab");
 const tabButtons = document.querySelectorAll(".tab-bar button");
@@ -29,6 +31,10 @@ for (const button of tabButtons) {
 }
 
 showTab("heatmap");
+
+// Show the current version on every launch
+showToast(`Reading Tracker v${APP_VERSION}`);
+
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
