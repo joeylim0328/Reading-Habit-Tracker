@@ -23,7 +23,7 @@ function saveSyncInfo(info) {
 }
 
 function render() {
-  const { email } = loadSyncInfo();
+  const { email, lastSyncedAt } = loadSyncInfo();
   const connected = isSignedIn();
 
   signInButton.hidden = connected;
@@ -44,6 +44,7 @@ function render() {
 
   // Show "Last synced: <date and time>" in lastSyncedText,
   // or hide it if there's no lastSyncedAt yet
+  lastSyncedText.hidden = !lastSyncedAt;
   if (lastSyncedAt) {
     const when = new Date(lastSyncedAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
     lastSyncedText.textContent = `Last synced: ${when}`;
