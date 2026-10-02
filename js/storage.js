@@ -159,3 +159,45 @@ export function importData(text) {
   state = { schemaVersion: 1, books: data.books, entries: data.entries };
   saveState();
 }
+
+// ---------- Sync helpers ----------
+
+// Picks the newer of two versions of the same record
+function newerRecord(a, b) {
+  // Return whichever of a and b has the later updatedAt
+  if (a.updatedAt > b.updatedAt){
+    return a;
+  }
+  else{
+    return b;
+  }
+}
+
+// Combines two lists of records by id, keeping the newer version of each
+function mergeRecords(listA, listB) {
+  const byId = new Map();
+  for (const record of [...listA, ...listB]) {
+    const existing = byId.get(record.id);
+    byId.set(record.id, existing ? newerRecord(existing, record) : record);
+  }
+  return [...byId.values()];
+}
+
+// Combines two whole data sets, e.g. this phone's and Google Drive's
+export function mergeStates(a, b) {
+  return {
+    schemaVersion: 1,
+    books: mergeRecords(a.books, b.books),
+    entries: mergeRecords(a.entries, b.entries),
+  };
+}
+
+// Used by sync: read the whole data set, or replace it with a merged one
+export function getState() {
+  return state;
+}
+
+export function setState(newState) {
+  state = newState;
+  saveState();
+}
