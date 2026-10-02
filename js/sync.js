@@ -42,8 +42,12 @@ function render() {
     statusText.textContent = `Signed in as ${email}. Tap Reconnect to sync.`;
   }
 
-  // TODO (you!): show "Last synced: <date and time>" in lastSyncedText,
+  // Show "Last synced: <date and time>" in lastSyncedText,
   // or hide it if there's no lastSyncedAt yet
+  if (lastSyncedAt) {
+    const when = new Date(lastSyncedAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+    lastSyncedText.textContent = `Last synced: ${when}`;
+  }
 }
 
 export async function sync() {
