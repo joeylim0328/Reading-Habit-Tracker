@@ -23,10 +23,16 @@ function render() {
   signInButton.textContent = email ? "Reconnect" : "Sign in with Google";
   signOutButton.hidden = !email;
 
-  // TODO (you!): set statusText.textContent for the three states:
   //   no email             -> "Sign in to back up and sync your data across devices."
   //   email + connected    -> "Signed in as <email>"
   //   email, not connected -> "Signed in as <email>. Tap Reconnect to sync."
+    if (!email) {
+    statusText.textContent = "Sign in to back up and sync your data across devices.";
+  } else if (connected) {
+    statusText.textContent = `Signed in as ${email}`;
+  } else {
+    statusText.textContent = `Signed in as ${email}. Tap Reconnect to sync.`;
+  }
 }
 
 signInButton.addEventListener("click", async () => {
