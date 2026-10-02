@@ -3,6 +3,7 @@ import { renderBooks } from "./books.js";
 import { renderLog } from "./log.js";
 import { renderHeatmap } from "./heatmap.js";
 import "./backup.js";
+import "./sync.js";
 import { APP_VERSION } from "./version.js";
 import { showToast } from "./toast.js";
 
