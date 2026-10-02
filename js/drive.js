@@ -64,7 +64,11 @@ async function driveFetch(url, options = {}) {
     accessToken = null;
     throw new Error("Google sign-in expired");
   }
-  if (!response.ok) throw new Error(`Google Drive error ${response.status}`);
+  if (!response.ok) {
+    const error = new Error(`Google Drive error ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
   return response;
 }
 
@@ -72,4 +76,64 @@ export async function getUserEmail() {
   const response = await driveFetch("https://www.googleapis.com/drive/v3/about?fields=user(emailAddress)");
   const data = await response.json();
   return data.user.emailAddress;
+}
+
+const FILE_NAME = "reading-habit-tracker.json";
+const FOLDER_NAME = "Reading-Tracker";
+const FOLDER_TYPE = "application/vnd.google-apps.folder";
+
+// Searches Drive with a query; creates the item from `metadata` if nothing is found
+async function findOrCreate(query, metadata) {
+  const params = new URLSearchParams({
+    q: `${query} and trashed=false`,
+    orderBy: "modifiedTime desc",
+    fields: "files(id)",
+  });
+  const listResponse = await driveFetch(`https://www.googleapis.com/drive/v3/files?${params}`);
+  const { files } = await listResponse.json();
+  if (files.length > 0) return files[0].id;
+
+  const createResponse = await driveFetch("https://www.googleapis.com/drive/v3/files?fields=id", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(metadata),
+  });
+  return (await createResponse.json()).id;
+}
+
+// Returns the id of Reading-Tracker/reading-habit-tracker.json, creating either if needed
+export async function findOrCreateFile(knownId) {
+  if (knownId) {
+    try {
+      const response = await driveFetch(`https://www.googleapis.com/drive/v3/files/${knownId}?fields=id,trashed`);
+      const file = await response.json();
+      if (!file.trashed) return file.id;
+    } catch (error) {
+      if (error.status !== 404) throw error;
+    }
+  }
+
+  const folderId = await findOrCreate(
+    `name='${FOLDER_NAME}' and mimeType='${FOLDER_TYPE}'`,
+    { name: FOLDER_NAME, mimeType: FOLDER_TYPE },
+  );
+  return findOrCreate(
+    `name='${FILE_NAME}' and '${folderId}' in parents`,
+    { name: FILE_NAME, mimeType: "application/json", parents: [folderId] },
+  );
+}
+
+// Returns the file's data, or null if the file is still empty
+export async function downloadFile(fileId) {
+  const response = await driveFetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`);
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
+}
+
+export async function uploadFile(fileId, data) {
+  await driveFetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data, null, 2),
+  });
 }

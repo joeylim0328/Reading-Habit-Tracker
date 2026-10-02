@@ -9,8 +9,11 @@ import { showToast } from "./toast.js";
 
 const tabs = document.querySelectorAll(".tab");
 const tabButtons = document.querySelectorAll(".tab-bar button");
+let currentTab = "heatmap";
 
 function showTab(name) {
+  currentTab = name;
+
   // Show the matching <section>, hide the others
   for (const tab of tabs) {
     tab.hidden = tab.id !== `tab-${name}`;
@@ -30,6 +33,9 @@ function showTab(name) {
 for (const button of tabButtons) {
   button.addEventListener("click", () => showTab(button.dataset.tab));
 }
+
+// Redraw the current tab when sync brings in new data
+window.addEventListener("datachange", () => showTab(currentTab));
 
 showTab("heatmap");
 

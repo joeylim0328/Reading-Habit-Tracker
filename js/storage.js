@@ -145,7 +145,7 @@ function isValidEntry(e) {
     && e.pages > 0;
 }
 
-function isValidState(data) {
+export function isValidState(data) {
   return Boolean(data)
     && Array.isArray(data.books) && data.books.every(isValidBook)
     && Array.isArray(data.entries) && data.entries.every(isValidEntry);

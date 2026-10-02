@@ -99,10 +99,12 @@
       <ul id="book-list" class="book-list"></ul>
 
       <div class="card">
-        <h3>Google Drive Sync</h3>
+        <h3>Google Drive Sync (Only works for myself)</h3>
         <p id="drive-status" class="muted"></p>
+        <p id="drive-last-synced" class="muted" hidden></p>
         <div class="form-actions">
           <button type="button" class="primary" id="drive-sign-in" disabled>Sign in with Google</button>
+          <button type="button" id="drive-sync-now" hidden>Sync now</button>
           <button type="button" id="drive-sign-out" hidden>Sign out</button>
         </div>
       </div>
